@@ -1,0 +1,183 @@
+package atm;
+
+public class atm {
+	private double depositAmount;
+	private double balance;
+	private double withdrawAmount;
+
+
+	public double getDepositAmount() {
+		return depositAmount;
+	}
+
+
+	public void setDepositAmount(double depositAmount) {
+		this.depositAmount = depositAmount;
+	}
+
+
+	public double getBalance() {
+		return balance;
+	}
+
+
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+
+
+	public double getWithdrawAmount() {
+		return withdrawAmount;
+	}
+
+
+	public void setWithdrawAmount(double withdrawAmount) {
+		this.withdrawAmount = withdrawAmount;
+	}
+
+
+	@Override
+	public String toString() {
+		return "atm [depositAmount=" + depositAmount + ", balance=" + balance + ", withdrawAmount=" + withdrawAmount
+				+ "]";
+	}
+	
+
+
+	
+
+}
+
+package atm;
+
+public interface AtmInterface {
+	public void viewBalance();
+	public void depositAmount(double depositAmount);
+	public void withdrawAmount(double withdrawAmount);
+	public void vieewminiStatement();
+	
+
+}
+
+
+package atm;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+public class AtmImplementation implements  AtmInterface {
+	atm Atm=new atm();
+	Map<Double,String> ministmt=new HashMap<>();
+	
+	@Override
+	public void viewBalance() {
+		 System.out.println("Balance amount is:"+Atm.getBalance())	;	
+	}
+
+	@Override
+	public void depositAmount(double depositAmount) {
+		System.out.println("deposit amount is:"+depositAmount)	;	
+		Atm.setBalance(Atm.getBalance()+depositAmount);
+		ministmt.put(depositAmount,"Deposited Successfully");
+		viewBalance();
+	
+		
+		
+	}
+
+	@Override
+	
+	public void withdrawAmount(double withdrawAmount) {
+		if(withdrawAmount % 100==0) {
+			if(withdrawAmount<=Atm.getBalance()) {
+				System.out.println("collecct the cash"+withdrawAmount);
+				Atm.setBalance(Atm.getBalance()- withdrawAmount);
+				ministmt.put(withdrawAmount,"Amount withdrawn");
+				viewBalance();
+				
+				
+			}
+			else {
+				System.out.println("Insufficiient balance");
+			}
+		}
+		else {
+			System.out.println("Enter amount in terms of 100");
+		}
+		
+	}
+
+	@Override
+	public void vieewminiStatement() {
+		Set <Double> set=ministmt.keySet();
+		for(Double d:set) {
+			System.out.println(d+"="+ministmt.get(d));
+		}
+		
+	}
+
+}
+
+package atm;
+
+import java.util.Scanner;
+
+public class Userinterface {
+	private static int status;
+
+	public static void main(String [] args) {
+		AtmImplementation imp1=new AtmImplementation();
+		Scanner scan=new Scanner (System.in);
+		int atmnumber=123456;
+		int atmpin=123;
+		System.out.println("Enter the atm number");
+		int atm2=scan.nextInt();
+		System.out.println("Enter the pin");
+		int atmpin2=scan.nextInt();
+		if(atmnumber == atm2 && atmpin == atmpin2) {
+			while(true) {
+			System.out.println(" 1.view balance \n 2.withdraw amount \n 3. Deposit amount \n 4. view mini statement \n 5.exit");
+			System.out.println("Enter choice");
+			int ch=scan.nextInt();
+			if(ch==1) {
+				imp1.viewBalance();
+			}
+			
+			else if(ch==2) {
+				System.out.println("Enter amount withdraw");
+				double withdrawAmount=scan.nextDouble();
+				imp1.withdrawAmount(withdrawAmount);
+				 
+			}
+			else if(ch==3) {
+				System.out.println("Enter amount deposit");
+				double depositAmount=scan.nextDouble();
+				imp1.depositAmount(depositAmount);
+				
+			}
+			else if(ch==4) {
+				imp1.vieewminiStatement();
+				
+			}
+			else if(ch==5) {
+				System.out.println("collect card");
+				System.exit(status);
+				
+			}
+			}
+			
+			
+			
+			
+			
+		}
+		else {
+			System.out.println("Entered incrooect number and password");
+		}
+		
+	}
+
+}
+
+
